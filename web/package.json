@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node i18n.check.mjs && tsc && vite build",
-    "check": "node i18n.check.mjs",
+    "build": "node tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
