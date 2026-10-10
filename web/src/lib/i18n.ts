@@ -140,6 +140,8 @@ export function setLang(l: Lang) {
     const raw = dict[currentLang][key];
     if (typeof raw === "string") el.textContent = raw;
   });
+  document.getElementById("lang-vi")?.classList.toggle("active", l === "vi");
+  document.getElementById("lang-en")?.classList.toggle("active", l === "en");
 }
 
 export function t(key: string): string {

@@ -1,5 +1,4 @@
-import { getLang } from "./i18n";
-import { t } from "./i18n";
+import { getLang, t } from "./i18n";
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -33,6 +32,16 @@ export function ago(ms: number) {
   if (h < 48) return `${h} ${t("agoHour")}`;
   return `${Math.round(h / 24)} ${t("agoDay")}`;
 }
+
+/** localized label for a range window given in minutes */
+export const rangeLabel = (min: number) => {
+  if (min === 30) return t("range30m");
+  if (min === 360) return t("range6h");
+  if (min === 1440) return t("range1d");
+  if (min === 4320) return t("range3d");
+  if (min === 10080) return t("range7d");
+  return `${min}m`;
+};
 
 export function uptime(ms: number) {
   const s = Math.round(ms / 1000);

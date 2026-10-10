@@ -6,6 +6,9 @@ export const SOIL_THIRSTY = 30; // %
 
 export const LOG_PAGE = 60;
 
+export const DEFAULT_RANGE = 4320; // minutes = 3 days, the default selected window
+
+
 export const TEMP_MAX_GAUGE = 60;
 
 export const GAUGE_TRACK = "rgba(148,163,184,.16)";

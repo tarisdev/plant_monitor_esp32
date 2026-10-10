@@ -1,8 +1,8 @@
 import Chart from "chart.js/auto";
 import type { ChartConfiguration } from "chart.js";
-import { CHART_AXIS, CHART_LEGEND, CHART_TOOLTIP, SOIL_THIRSTY } from "./config";
-import { $ } from "./format";
-import { t } from "./i18n";
+import { CHART_AXIS, CHART_LEGEND, CHART_TOOLTIP, SOIL_THIRSTY } from "../lib/config";
+import { $ } from "../lib/format";
+import { t } from "../lib/i18n";
 
 export function updateClimate(chart: Chart<"line">, labels: string[], temps: number[], hums: number[]) {
   chart.data.labels = labels;

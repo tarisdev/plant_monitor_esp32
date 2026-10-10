@@ -1,8 +1,8 @@
 import Chart from "chart.js/auto";
 import type { ChartConfiguration } from "chart.js";
-import { GAUGE_TRACK, SOIL_THIRSTY, TEMP_MAX_GAUGE } from "./config";
-import { $ } from "./format";
-import { t } from "./i18n";
+import { GAUGE_TRACK, SOIL_THIRSTY, TEMP_MAX_GAUGE } from "../lib/config";
+import { $ } from "../lib/format";
+import { t } from "../lib/i18n";
 
 type TagKind = "good" | "warn" | "bad" | "";
 

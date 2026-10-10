@@ -336,10 +336,11 @@ Dung lượng lịch sử là **672 mẫu**: 7 ngày × 24 giờ × 4 mẫu mỗ
 ## 10. Design notes / Ghi chú kỹ thuật
 
 - The dashboard uses Firestore real-time listeners for the latest reading and history.
-- `HISTORY_LIMIT` in `web/src/main.ts` is `672`, matching one full ring-buffer cycle. If you change the history capacity, keep the firmware and web settings consistent.
-- To change document paths or sensor fields, update the firmware and the matching definitions in `web/src/main.ts`.
+- `HISTORY_LIMIT` in `web/src/lib/config.ts` is `672`, matching one full ring-buffer cycle. If you change the history capacity, keep the firmware and web settings consistent.
+- To change document paths or sensor fields, update the firmware and the matching definitions in `web/src/lib/config.ts` (paths) and `web/src/lib/types.ts` (field shapes).
+- Source layout: `web/src/main.ts` (entry, wiring only) + `style.css`; `web/src/lib/` holds shared code (`config.ts` constants, `types.ts` payload shapes, `i18n.ts` vi/en text, `format.ts` number/date helpers, `firebase.ts` db init); `web/src/components/` holds one module per UI part (`charts.ts`, `gauges.ts`, `status.ts`, `latest.ts`, `history.ts`, `range.ts`).
 - The dashboard is read-only; configuration and sensor sampling are handled by the firmware.
 
-**VI:** Dashboard nhận dữ liệu realtime từ Firestore. Nếu thay đổi đường dẫn, field hoặc số lượng mẫu lịch sử, cần cập nhật đồng bộ firmware và `web/src/main.ts`.
+**VI:** Dashboard nhận dữ liệu realtime từ Firestore. Nếu thay đổi đường dẫn, field hoặc số lượng mẫu lịch sử, cần cập nhật đồng bộ firmware và `web/src/lib/config.ts` (đường dẫn) + `web/src/lib/types.ts` (kiểu field). Nguồn tách theo 2 thư mục: `web/src/lib/` (mã dùng chung) và `web/src/components/` (từng phần giao diện: `latest.ts` dữ liệu mới nhất, `history.ts` bảng log, `charts.ts` / `gauges.ts` biểu đồ, …), còn `main.ts` chỉ nối chúng lại.
 
-**EN:** The dashboard receives real-time updates from Firestore. If document paths, fields, or history capacity change, update both the firmware and `web/src/main.ts`.
+**EN:** The dashboard receives real-time updates from Firestore. If document paths, fields, or history capacity change, update both the firmware and `web/src/lib/config.ts` (paths) + `web/src/lib/types.ts` (field shapes). Source is split into two folders: `web/src/lib/` (shared code) and `web/src/components/` (one module per UI part: `latest.ts`, `history.ts`, `charts.ts` / `gauges.ts`, …), while `main.ts` only wires them together.
