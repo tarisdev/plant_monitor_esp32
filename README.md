@@ -256,7 +256,7 @@ The production files are generated in `web/dist/`. You can deploy them to a stat
 |---|---|
 | KPI cards | Temperature, air humidity, soil moisture, raw ADC |
 | Charts | Temperature/air humidity and soil moisture |
-| Time range | 24 hours, 3 days, or 7 days |
+| Time range | 30 minutes, 6 hours, 1 day, 3 days, or 7 days |
 | Data log | Readings in the selected range, newest first |
 | Device status | DHT11, Wi-Fi, IP, uptime, NTP, latest slot |
 | Status indicator | Green: live updates; yellow: no data; red: Firestore error |

@@ -190,7 +190,8 @@ const soil = new Chart($<HTMLCanvasElement>("chart-soil"), {
 
 /* ---------- state + rendering ---------- */
 let history: Reading[] = [];
-let rangeDays = 3;
+let rangeMinutes = 4320; // mặc định 3 ngày; giá trị nút đọc theo phút
+let rangeLabel = "3 ngày";
 let latestTs: number | undefined;
 
 function setStatus(kind: "live" | "idle" | "error", text: string) {
@@ -247,12 +248,12 @@ function renderLog(rows: Reading[]) {
     )
     .join("");
   $("log-count").textContent = rows.length
-    ? `${rows.length} mẫu trong ${rangeDays} ngày gần nhất`
+    ? `${rows.length} mẫu trong ${rangeLabel} gần nhất`
     : "chưa có mẫu nào";
 }
 
 function paint() {
-  const since = Date.now() - rangeDays * 86_400_000;
+  const since = Date.now() - rangeMinutes * 60_000;
   const rows = history.filter((r) => r.timestamp >= since);
   const labels = rows.map((r) => stamp(r.timestamp));
 
@@ -276,9 +277,10 @@ function paint() {
 /* ---------- range filter ---------- */
 $("ranges").addEventListener("click", (event) => {
   const btn = (event.target as HTMLElement).closest<HTMLButtonElement>("button[data-range]");
-  const days = Number(btn?.dataset.range);
-  if (!btn || !days) return;
-  rangeDays = days;
+  const minutes = Number(btn?.dataset.range);
+  if (!btn || !Number.isFinite(minutes) || minutes <= 0) return;
+  rangeMinutes = minutes;
+  rangeLabel = btn.textContent?.trim() || rangeLabel;
   $("ranges")
     .querySelectorAll("button")
     .forEach((b) => b.classList.toggle("active", b === btn));
