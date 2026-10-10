@@ -27,20 +27,35 @@
       </header>
 
       <section class="kpis">
-        <article class="card kpi kpi-temp">
-          <span class="kpi-label">Nhiệt độ</span>
-          <div class="kpi-value"><span id="temp">—</span><em>°C</em></div>
-          <span class="kpi-foot" id="temp-foot">DHT11</span>
+        <article class="card gauge gauge-temp">
+          <div class="gauge-head">
+            <span class="gauge-label">Nhiệt độ</span>
+            <span class="gauge-tag" id="tag-temp">—</span>
+          </div>
+          <div class="gauge-body">
+            <canvas id="gauge-temp"></canvas>
+            <div class="gauge-read"><strong id="temp">—</strong><em>°C</em></div>
+          </div>
         </article>
-        <article class="card kpi kpi-hum">
-          <span class="kpi-label">Độ ẩm không khí</span>
-          <div class="kpi-value"><span id="hum">—</span><em>%</em></div>
-          <span class="kpi-foot" id="hum-foot">DHT11</span>
+        <article class="card gauge gauge-hum">
+          <div class="gauge-head">
+            <span class="gauge-label">Độ ẩm không khí</span>
+            <span class="gauge-tag" id="tag-hum">—</span>
+          </div>
+          <div class="gauge-body">
+            <canvas id="gauge-hum"></canvas>
+            <div class="gauge-read"><strong id="hum">—</strong><em>%</em></div>
+          </div>
         </article>
-        <article class="card kpi kpi-soil">
-          <span class="kpi-label">Độ ẩm đất</span>
-          <div class="kpi-value"><span id="soil">—</span><em>%</em></div>
-          <span class="kpi-foot" id="soil-foot">YL-69</span>
+        <article class="card gauge gauge-soil">
+          <div class="gauge-head">
+            <span class="gauge-label">Độ ẩm đất</span>
+            <span class="gauge-tag" id="tag-soil">—</span>
+          </div>
+          <div class="gauge-body">
+            <canvas id="gauge-soil"></canvas>
+            <div class="gauge-read"><strong id="soil">—</strong><em>%</em></div>
+          </div>
         </article>
         <article class="card kpi kpi-adc">
           <span class="kpi-label">ADC đất</span>

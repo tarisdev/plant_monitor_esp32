@@ -188,6 +188,68 @@ const soil = new Chart($<HTMLCanvasElement>("chart-soil"), {
   },
 } as ChartConfiguration<"line", number[], string>);
 
+/* ---------- gauges: half-circle KPI cards ---------- */
+const TEMP_MAX = 60; // °C — gauge scale for the temperature card
+const GAUGE_TRACK = "rgba(148,163,184,.16)";
+
+function makeGauge(id: string, color: string) {
+  return new Chart($<HTMLCanvasElement>(id), {
+    type: "doughnut",
+    data: {
+      labels: [],
+      datasets: [
+        {
+          data: [0, 1],
+          backgroundColor: [color, GAUGE_TRACK],
+          borderWidth: 0,
+          borderRadius: 8,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      circumference: 180, // render half a circle (like a speedometer)
+      rotation: -90,
+      cutout: "74%",
+      animation: { duration: 400 },
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+    },
+  } as ChartConfiguration<"doughnut", number[], string>);
+}
+
+function setGauge(g: Chart<"doughnut">, value: number | undefined, max: number) {
+  const v =
+    typeof value === "number" && Number.isFinite(value)
+      ? Math.min(Math.max(value, 0), max)
+      : 0;
+  g.data.datasets[0].data = [v, max - v];
+  g.update();
+}
+
+/* ---------- level tags on the gauge cards ---------- */
+type TagKind = "good" | "warn" | "bad" | "";
+
+function setTag(id: string, kind: TagKind, text: string) {
+  const el = $(id);
+  el.textContent = text;
+  el.className = kind ? `gauge-tag ${kind}` : "gauge-tag";
+}
+
+// levels: sorted by max, each [max, kind, label]; the last entry must use Infinity
+function rate(id: string, value: unknown, levels: ReadonlyArray<[number, TagKind, string]>) {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    setTag(id, "", "—");
+    return;
+  }
+  const [, kind, label] = levels.find(([max]) => value < max)!;
+  setTag(id, kind, label);
+}
+
+const tempGauge = makeGauge("gauge-temp", "#fbbf24");
+const humGauge = makeGauge("gauge-hum", "#60a5fa");
+const soilGauge = makeGauge("gauge-soil", "#2dd4bf");
+
 /* ---------- state + rendering ---------- */
 let history: Reading[] = [];
 let rangeMinutes = 4320; // mặc định 3 ngày; giá trị nút đọc theo phút
@@ -216,6 +278,27 @@ function renderLatest(data: Latest) {
   $("hum").textContent = n(s.humidity);
   $("soil").textContent = int(s.soilMoisture);
   $("adc").textContent = int(s.soilRaw);
+
+  setGauge(tempGauge, s.temperature, TEMP_MAX);
+  setGauge(humGauge, s.humidity, 100);
+  setGauge(soilGauge, s.soilMoisture, 100);
+
+  rate("tag-temp", s.temperature, [
+    [18, "bad", "Lạnh"],
+    [28, "good", "Mát mẻ"],
+    [34, "warn", "Ấm"],
+    [Infinity, "bad", "Nóng"],
+  ]);
+  rate("tag-hum", s.humidity, [
+    [30, "bad", "Khô"],
+    [70, "good", "Phù hợp"],
+    [Infinity, "warn", "Ẩm"],
+  ]);
+  rate("tag-soil", s.soilMoisture, [
+    [SOIL_THIRSTY, "bad", "Cần tưới"],
+    [75, "good", "Đủ ẩm"],
+    [Infinity, "warn", "Quá ẩm"],
+  ]);
 
   $("soil-now").textContent =
     typeof s.soilMoisture === "number"

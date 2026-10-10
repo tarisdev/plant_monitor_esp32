@@ -270,6 +270,95 @@ body {
   --accent: #a78bfa;
 }
 
+/* ---------- gauge cards (half-circle) ---------- */
+.gauge {
+  padding: 16px 16px 14px;
+}
+
+.gauge-temp {
+  --accent: var(--amber);
+}
+
+.gauge-hum {
+  --accent: var(--blue);
+}
+
+.gauge-soil {
+  --accent: var(--teal);
+}
+
+.gauge-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.gauge-label {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.gauge-tag {
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.3px;
+  color: var(--text);
+  background: rgba(148, 163, 184, 0.22);
+  white-space: nowrap;
+}
+
+.gauge-tag.good {
+  color: #04120f;
+  background: var(--green);
+}
+
+.gauge-tag.warn {
+  color: #04120f;
+  background: var(--amber);
+}
+
+.gauge-tag.bad {
+  color: #04120f;
+  background: var(--red);
+}
+
+.gauge-body {
+  position: relative;
+  height: 122px;
+}
+
+.gauge-read {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.gauge-read strong {
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.gauge-read em {
+  font-style: normal;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 
 /* ---------- chart panels ---------- */
 /* One shared column template, so both rows align: climate = log width, soil = device width. */
