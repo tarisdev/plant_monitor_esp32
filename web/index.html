@@ -17,19 +17,23 @@
           <span class="logo">🌱</span>
           <div>
             <h1>Plant Monitor</h1>
-            <p>DHT11 + YL-69 · lấy mẫu mỗi 15 phút · lưu 7 ngày</p>
+            <p data-i18n="brandTagline">DHT11 + YL-69 · lấy mẫu mỗi 15 phút · lưu 7 ngày</p>
           </div>
         </div>
         <div class="topbar-right">
-          <span id="conn" class="pill pill-idle"><i></i><span id="conn-text">Đang kết nối…</span></span>
-          <div class="updated"><span>Cập nhật cuối</span><strong id="last-update">—</strong></div>
+          <div class="langs" id="langs" role="group" aria-label="Ngôn ngữ / Language">
+            <button type="button" id="lang-vi" class="active">VI</button>
+            <button type="button" id="lang-en">EN</button>
+          </div>
+          <span id="conn" class="pill pill-idle"><i></i><span id="conn-text" data-i18n="connecting">Đang kết nối…</span></span>
+          <div class="updated"><span data-i18n="lastUpdate">Cập nhật cuối</span><strong id="last-update">—</strong></div>
         </div>
       </header>
 
       <section class="kpis">
         <article class="card gauge gauge-temp">
           <div class="gauge-head">
-            <span class="gauge-label">Nhiệt độ</span>
+            <span class="gauge-label" data-i18n="kpiTemp">Nhiệt độ</span>
             <span class="gauge-tag" id="tag-temp">—</span>
           </div>
           <div class="gauge-body">
@@ -39,7 +43,7 @@
         </article>
         <article class="card gauge gauge-hum">
           <div class="gauge-head">
-            <span class="gauge-label">Độ ẩm không khí</span>
+            <span class="gauge-label" data-i18n="kpiHum">Độ ẩm không khí</span>
             <span class="gauge-tag" id="tag-hum">—</span>
           </div>
           <div class="gauge-body">
@@ -49,7 +53,7 @@
         </article>
         <article class="card gauge gauge-soil">
           <div class="gauge-head">
-            <span class="gauge-label">Độ ẩm đất</span>
+            <span class="gauge-label" data-i18n="kpiSoil">Độ ẩm đất</span>
             <span class="gauge-tag" id="tag-soil">—</span>
           </div>
           <div class="gauge-body">
@@ -58,22 +62,22 @@
           </div>
         </article>
         <article class="card kpi kpi-adc">
-          <span class="kpi-label">ADC đất</span>
+          <span class="kpi-label" data-i18n="kpiAdc">ADC đất</span>
           <div class="kpi-value"><span id="adc">—</span><em>raw</em></div>
-          <span class="kpi-foot">GPIO34 · 0–4095</span>
+          <span class="kpi-foot" data-i18n="kpiAdcFoot">GPIO34 · 0–4095</span>
         </article>
       </section>
 
       <section class="panels panels-2">
         <div class="card chart-card">
           <div class="card-head">
-            <h2>Nhiệt độ &amp; Độ ẩm không khí</h2>
+            <h2 data-i18n="chartClimate">Nhiệt độ &amp; Độ ẩm không khí</h2>
             <div class="ranges" id="ranges">
-              <button type="button" data-range="30">30 phút</button>
-              <button type="button" data-range="360">6 giờ</button>
-              <button type="button" data-range="1440">1 ngày</button>
-              <button type="button" data-range="4320" class="active">3 ngày</button>
-              <button type="button" data-range="10080">7 ngày</button>
+              <button type="button" data-range="30" data-i18n="range30m">30 phút</button>
+              <button type="button" data-range="360" data-i18n="range6h">6 giờ</button>
+              <button type="button" data-range="1440" data-i18n="range1d">1 ngày</button>
+              <button type="button" data-range="4320" class="active" data-i18n="range3d">3 ngày</button>
+              <button type="button" data-range="10080" data-i18n="range7d">7 ngày</button>
             </div>
           </div>
           <div class="canvas-wrap"><canvas id="chart-climate"></canvas></div>
@@ -81,7 +85,7 @@
 
         <div class="card chart-card">
           <div class="card-head">
-            <h2>Độ ẩm đất</h2>
+            <h2 data-i18n="chartSoil">Độ ẩm đất</h2>
             <span class="muted" id="soil-now">—</span>
           </div>
           <div class="canvas-wrap"><canvas id="chart-soil"></canvas></div>
@@ -91,19 +95,19 @@
       <section class="panels panels-log">
         <div class="card table-card">
           <div class="card-head">
-            <h2>Log dữ liệu</h2>
+            <h2 data-i18n="logData">Log dữ liệu</h2>
             <span class="muted" id="log-count">—</span>
           </div>
           <div class="table-scroll" id="log-scroll">
             <table>
               <thead>
                 <tr>
-                  <th>Thời gian</th>
-                  <th>Nhiệt độ</th>
-                  <th>Độ ẩm KK</th>
-                  <th>Độ ẩm đất</th>
-                  <th>ADC</th>
-                  <th>Slot</th>
+                  <th data-i18n="time">Thời gian</th>
+                  <th data-i18n="tempShort">Nhiệt độ</th>
+                  <th data-i18n="humShort">Độ ẩm KK</th>
+                  <th data-i18n="soilShort">Độ ẩm đất</th>
+                  <th data-i18n="adc">ADC</th>
+                  <th data-i18n="slot">Slot</th>
                 </tr>
               </thead>
               <tbody id="log-body"></tbody>
@@ -112,20 +116,20 @@
         </div>
 
         <div class="card">
-          <div class="card-head"><h2>Thiết bị</h2></div>
+          <div class="card-head"><h2 data-i18n="device">Thiết bị</h2></div>
           <ul class="device-list">
-            <li><span>DHT11</span><strong id="dev-dht">—</strong></li>
-            <li><span>WiFi</span><strong id="dev-wifi">—</strong></li>
-            <li><span>Địa chỉ IP</span><strong id="dev-ip">—</strong></li>
-            <li><span>Uptime</span><strong id="dev-uptime">—</strong></li>
-            <li><span>Đồng bộ NTP</span><strong id="dev-synced">—</strong></li>
-            <li><span>Slot gần nhất</span><strong id="dev-slot">—</strong></li>
+            <li><span data-i18n="dht">DHT11</span><strong id="dev-dht">—</strong></li>
+            <li><span data-i18n="wifi">WiFi</span><strong id="dev-wifi">—</strong></li>
+            <li><span data-i18n="ip">Địa chỉ IP</span><strong id="dev-ip">—</strong></li>
+            <li><span data-i18n="uptime">Uptime</span><strong id="dev-uptime">—</strong></li>
+            <li><span data-i18n="ntpSync">Đồng bộ NTP</span><strong id="dev-synced">—</strong></li>
+            <li><span data-i18n="latestSlot">Slot gần nhất</span><strong id="dev-slot">—</strong></li>
           </ul>
         </div>
       </section>
     </div>
 
-    <div id="empty" class="empty">Chưa có dữ liệu — kiểm tra ESP32 đã gửi lên Firestore chưa.</div>
+    <div id="empty" class="empty" data-i18n="noData">Chưa có dữ liệu — kiểm tra ESP32 đã gửi lên Firestore chưa.</div>
 
     <script type="module" src="/src/main.ts"></script>
   </body>

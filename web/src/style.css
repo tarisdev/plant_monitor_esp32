@@ -87,6 +87,36 @@ body {
   gap: 18px;
 }
 
+.langs {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.langs button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.langs button:hover {
+  color: var(--text);
+}
+
+.langs button.active {
+  color: #04120f;
+  background: linear-gradient(160deg, var(--teal), #34d399);
+}
+
 .pill {
   display: inline-flex;
   align-items: center;
