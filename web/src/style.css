@@ -357,6 +357,17 @@ body {
   background: var(--red);
 }
 
+/* the temperature card tints its arc, readout and pill per level
+   (--level / --level-ink are set from gauges.ts) */
+.gauge-temp .gauge-read strong {
+  color: var(--level, inherit);
+}
+
+.gauge-temp .gauge-tag {
+  color: var(--level-ink, var(--text));
+  background: var(--level, rgba(148, 163, 184, 0.22));
+}
+
 .gauge-body {
   position: relative;
   height: 122px;

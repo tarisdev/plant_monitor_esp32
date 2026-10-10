@@ -6,7 +6,9 @@ import { t } from "./i18n";
 
 type TagKind = "good" | "warn" | "bad" | "";
 
-const tempGauge = makeGauge("gauge-temp", "#fbbf24");
+const TEMP_DEFAULT = "#fbbf24"; // neutral amber while there is no reading
+
+const tempGauge = makeGauge("gauge-temp", TEMP_DEFAULT);
 const humGauge = makeGauge("gauge-hum", "#60a5fa");
 const soilGauge = makeGauge("gauge-soil", "#2dd4bf");
 
@@ -59,17 +61,38 @@ function rate(id: string, value: unknown, levels: ReadonlyArray<[number, TagKind
   setTag(id, kind, label);
 }
 
+// temperature tints the whole card per level: cold→blue, cool→green, warm→amber, hot→red.
+// Colours the arc only; the caller's setGauge() does the single chart update.
+function tintTemp(value: unknown) {
+  const level =
+    typeof value === "number" && Number.isFinite(value)
+      ? ([
+          [18, t("tempCold"), "#60a5fa"],
+          [28, t("tempCool"), "#4ade80"],
+          [34, t("tempWarm"), "#fbbf24"],
+          [Infinity, t("tempHot"), "#f87171"],
+        ] as ReadonlyArray<[number, string, string]>).find(([max]) => value < max)
+      : undefined;
+
+  setTag("tag-temp", "", level?.[1] ?? "—"); // no kind class: the pill colour is --level
+  const style = $("card-temp").style;
+  if (level) {
+    style.setProperty("--level", level[2]);
+    style.setProperty("--level-ink", "#04120f");
+    tempGauge.data.datasets[0].backgroundColor = [level[2], GAUGE_TRACK];
+  } else {
+    style.removeProperty("--level");
+    style.removeProperty("--level-ink");
+    tempGauge.data.datasets[0].backgroundColor = [TEMP_DEFAULT, GAUGE_TRACK];
+  }
+}
+
 export function updateGauges(temp: number | undefined, hum: number | undefined, soil: number | undefined) {
+  tintTemp(temp); // must run before the setGauge() update below
   setGauge(tempGauge, temp, TEMP_MAX_GAUGE);
   setGauge(humGauge, hum, 100);
   setGauge(soilGauge, soil, 100);
 
-  rate("tag-temp", temp, [
-    [18, "bad", t("tempCold")],
-    [28, "good", t("tempCool")],
-    [34, "warn", t("tempWarm")],
-    [Infinity, "bad", t("tempHot")],
-  ]);
   rate("tag-hum", hum, [
     [30, "bad", t("humDry")],
     [70, "good", t("humOk")],
