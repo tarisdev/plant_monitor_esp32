@@ -1,0 +1,19 @@
+# Local config: web/.env holds the VITE_* web keys (public by design, but machine-local).
+# Keep .env.example committed as the template.
+.env
+!.env.example
+
+# Node / Vite
+node_modules/
+dist/
+*.local
+
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

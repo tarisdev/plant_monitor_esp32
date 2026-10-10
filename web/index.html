@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Plant Monitor — Dashboard</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>"
+    />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="logo">🌱</span>
+          <div>
+            <h1>Plant Monitor</h1>
+            <p>DHT11 + YL-69 · lấy mẫu mỗi 15 phút · lưu 7 ngày</p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span id="conn" class="pill pill-idle"><i></i><span id="conn-text">Đang kết nối…</span></span>
+          <div class="updated"><span>Cập nhật cuối</span><strong id="last-update">—</strong></div>
+        </div>
+      </header>
+
+      <section class="kpis">
+        <article class="card kpi kpi-temp">
+          <span class="kpi-label">Nhiệt độ</span>
+          <div class="kpi-value"><span id="temp">—</span><em>°C</em></div>
+          <span class="kpi-foot" id="temp-foot">DHT11</span>
+        </article>
+        <article class="card kpi kpi-hum">
+          <span class="kpi-label">Độ ẩm không khí</span>
+          <div class="kpi-value"><span id="hum">—</span><em>%</em></div>
+          <span class="kpi-foot" id="hum-foot">DHT11</span>
+        </article>
+        <article class="card kpi kpi-soil">
+          <span class="kpi-label">Độ ẩm đất</span>
+          <div class="kpi-value"><span id="soil">—</span><em>%</em></div>
+          <span class="kpi-foot" id="soil-foot">YL-69</span>
+        </article>
+        <article class="card kpi kpi-adc">
+          <span class="kpi-label">ADC đất</span>
+          <div class="kpi-value"><span id="adc">—</span><em>raw</em></div>
+          <span class="kpi-foot">GPIO34 · 0–4095</span>
+        </article>
+      </section>
+
+      <section class="panels panels-2">
+        <div class="card chart-card">
+          <div class="card-head">
+            <h2>Nhiệt độ &amp; Độ ẩm không khí</h2>
+            <div class="ranges" id="ranges">
+              <button type="button" data-range="1">24 giờ</button>
+              <button type="button" data-range="3" class="active">3 ngày</button>
+              <button type="button" data-range="7">7 ngày</button>
+            </div>
+          </div>
+          <div class="canvas-wrap"><canvas id="chart-climate"></canvas></div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-head">
+            <h2>Độ ẩm đất</h2>
+            <span class="muted" id="soil-now">—</span>
+          </div>
+          <div class="canvas-wrap"><canvas id="chart-soil"></canvas></div>
+        </div>
+      </section>
+
+      <section class="panels panels-log">
+        <div class="card table-card">
+          <div class="card-head">
+            <h2>Log dữ liệu</h2>
+            <span class="muted" id="log-count">—</span>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Thời gian</th>
+                  <th>Nhiệt độ</th>
+                  <th>Độ ẩm KK</th>
+                  <th>Độ ẩm đất</th>
+                  <th>ADC</th>
+                  <th>Slot</th>
+                </tr>
+              </thead>
+              <tbody id="log-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2>Thiết bị</h2></div>
+          <ul class="device-list">
+            <li><span>DHT11</span><strong id="dev-dht">—</strong></li>
+            <li><span>WiFi</span><strong id="dev-wifi">—</strong></li>
+            <li><span>Địa chỉ IP</span><strong id="dev-ip">—</strong></li>
+            <li><span>Uptime</span><strong id="dev-uptime">—</strong></li>
+            <li><span>Đồng bộ NTP</span><strong id="dev-synced">—</strong></li>
+            <li><span>Slot gần nhất</span><strong id="dev-slot">—</strong></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <div id="empty" class="empty">Chưa có dữ liệu — kiểm tra ESP32 đã gửi lên Firestore chưa.</div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
