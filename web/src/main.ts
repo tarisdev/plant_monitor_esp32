@@ -256,6 +256,9 @@ let rangeMinutes = 4320; // mặc định 3 ngày; giá trị nút đọc theo p
 let rangeLabel = "3 ngày";
 let latestTs: number | undefined;
 
+const LOG_PAGE = 60; // rows rendered per "infinite scroll" batch
+let logShown = LOG_PAGE;
+
 function setStatus(kind: "live" | "idle" | "error", text: string) {
   $("conn").className = `pill pill-${kind}`;
   $("conn-text").textContent = text;
@@ -316,8 +319,8 @@ function renderLatest(data: Latest) {
 }
 
 function renderLog(rows: Reading[]) {
-  $("log-body").innerHTML = rows
-    .slice()
+  const visible = rows.slice(-logShown); // newest `logShown` rows (ascending), flipped to newest-first below
+  $("log-body").innerHTML = visible
     .reverse()
     .map(
       (r) => `<tr>
@@ -331,13 +334,29 @@ function renderLog(rows: Reading[]) {
     )
     .join("");
   $("log-count").textContent = rows.length
-    ? `${rows.length} mẫu trong ${rangeLabel} gần nhất`
+    ? `${visible.length}/${rows.length} mẫu trong ${rangeLabel} gần nhất`
     : "chưa có mẫu nào";
 }
 
-function paint() {
+/* ---------- infinite scroll on the log table ---------- */
+$("log-scroll").addEventListener("scroll", () => {
+  const el = $("log-scroll");
+  if (
+    el.scrollTop + el.clientHeight >= el.scrollHeight - 80 &&
+    logShown < history.length
+  ) {
+    logShown = Math.min(logShown + LOG_PAGE, history.length);
+    renderLog(rowsInRange());
+  }
+});
+
+function rowsInRange() {
   const since = Date.now() - rangeMinutes * 60_000;
-  const rows = history.filter((r) => r.timestamp >= since);
+  return history.filter((r) => r.timestamp >= since);
+}
+
+function paint() {
+  const rows = rowsInRange();
   const labels = rows.map((r) => stamp(r.timestamp));
 
   climate.data.labels = labels;
@@ -364,6 +383,7 @@ $("ranges").addEventListener("click", (event) => {
   if (!btn || !Number.isFinite(minutes) || minutes <= 0) return;
   rangeMinutes = minutes;
   rangeLabel = btn.textContent?.trim() || rangeLabel;
+  logShown = LOG_PAGE;
   $("ranges")
     .querySelectorAll("button")
     .forEach((b) => b.classList.toggle("active", b === btn));
