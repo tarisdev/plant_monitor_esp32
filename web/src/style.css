@@ -138,6 +138,38 @@ body {
   color: var(--text);
 }
 
+/* ---------- scrollbar ---------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.32) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.28);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 /* ---------- cards ---------- */
 .card {
   background: var(--card);
@@ -145,6 +177,7 @@ body {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   backdrop-filter: blur(9px);
+  min-width: 0; /* let wide children (e.g. the log table) scroll instead of overflowing the grid */
 }
 
 .card-head {
@@ -239,18 +272,11 @@ body {
 
 
 /* ---------- chart panels ---------- */
+/* One shared column template, so both rows align: climate = log width, soil = device width. */
 .panels {
   display: grid;
   gap: 16px;
-}
-
-.panels-2 {
-  grid-template-columns: 1.55fr 1fr;
-}
-
-.panels-log {
   grid-template-columns: 2.05fr 1fr;
-  align-items: start;
 }
 
 .chart-card {
@@ -292,10 +318,13 @@ body {
 
 /* ---------- table ---------- */
 .table-card {
+  display: flex; /* stretch to match the device card height; let the scroll area absorb the rest */
+  flex-direction: column;
   padding-bottom: 8px;
 }
 
 .table-scroll {
+  flex: 1;
   max-height: 420px;
   overflow: auto;
   padding: 10px 6px 4px;
@@ -398,20 +427,107 @@ td.slot {
   display: block;
 }
 
+/* ---------- responsive ----------
+   ponytail: 3 breakpoints cover desktop / tablet / phone; add finer ones only when a real device breaks. */
 @media (max-width: 1020px) {
-  .panels-2,
-  .panels-log {
+  .panels {
     grid-template-columns: 1fr;
   }
 }
 
+/* Tablet portrait / large phone: let card heads wrap, shorten charts */
+@media (max-width: 760px) {
+  .card-head {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .ranges {
+    flex-wrap: wrap;
+  }
+
+  .canvas-wrap {
+    height: 250px;
+  }
+
+  .table-scroll {
+    max-height: 360px;
+  }
+}
+
+/* Phone: compact everything, 2×2 KPI grid, full-width range buttons */
 @media (max-width: 560px) {
+  .app {
+    gap: 14px;
+    padding-bottom: 32px;
+  }
+
   .topbar-right {
     width: 100%;
     justify-content: space-between;
   }
 
+  .logo {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+    border-radius: 13px;
+  }
+
+  .brand h1 {
+    font-size: 19px;
+  }
+
+  .brand p {
+    font-size: 11.5px;
+  }
+
+  .kpis {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .kpi {
+    padding: 14px 14px 12px;
+  }
+
+  .kpi-value span {
+    font-size: clamp(24px, 8vw, 30px);
+  }
+
+  .kpi-foot {
+    font-size: 11px;
+  }
+
+  .ranges {
+    width: 100%;
+  }
+
+  .ranges button {
+    flex: 1 1 auto;
+    padding: 8px 10px;
+    border-radius: 7px;
+  }
+
   .canvas-wrap {
-    height: 250px;
+    height: 230px;
+    padding: 10px 10px 12px;
+  }
+
+  .table-scroll {
+    max-height: 320px;
+  }
+
+  th,
+  td {
+    padding: 8px 9px;
+    font-size: 12px;
+  }
+}
+
+/* Small phone: single-column KPIs so the numbers stay readable */
+@media (max-width: 390px) {
+  .kpis {
+    grid-template-columns: 1fr;
   }
 }
