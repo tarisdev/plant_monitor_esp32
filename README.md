@@ -344,3 +344,21 @@ Dung lượng lịch sử là **672 mẫu**: 7 ngày × 24 giờ × 4 mẫu mỗ
 **VI:** Dashboard nhận dữ liệu realtime từ Firestore. Nếu thay đổi đường dẫn, field hoặc số lượng mẫu lịch sử, cần cập nhật đồng bộ firmware và `web/src/lib/config.ts` (đường dẫn) + `web/src/lib/types.ts` (kiểu field). Nguồn tách theo 2 thư mục: `web/src/lib/` (mã dùng chung) và `web/src/components/` (từng phần giao diện: `latest.ts` dữ liệu mới nhất, `history.ts` bảng log, `charts.ts` / `gauges.ts` biểu đồ, …), còn `main.ts` chỉ nối chúng lại.
 
 **EN:** The dashboard receives real-time updates from Firestore. If document paths, fields, or history capacity change, update both the firmware and `web/src/lib/config.ts` (paths) + `web/src/lib/types.ts` (field shapes). Source is split into two folders: `web/src/lib/` (shared code) and `web/src/components/` (one module per UI part: `latest.ts`, `history.ts`, `charts.ts` / `gauges.ts`, …), while `main.ts` only wires them together.
+
+---
+
+## 11. License / Giấy phép
+
+This project is released under the **PolyForm Noncommercial License 1.0.0** (see [`LICENSE`](LICENSE)).
+
+- **Allowed:** personal, hobby, study, research, educational, and other non-commercial use; you may modify and share it, as long as you keep the license and the `Required Notice` line.
+- **Not allowed:** any commercial use. Commercial use requires the author's prior written permission.
+
+Dự án phát hành theo giấy phép **PolyForm Noncommercial License 1.0.0** (xem [`LICENSE`](LICENSE)).
+
+- **Được phép:** dùng cho mục đích cá nhân, sở thích, học tập, nghiên cứu, giáo dục và mọi mục đích phi thương mại; được sửa đổi và chia sẻ, miễn là giữ nguyên giấy phép và dòng `Required Notice`.
+- **Không được phép:** dùng cho mục đích thương mại. Muốn dùng thương mại phải có sự đồng ý trước bằng văn bản của tác giả.
+
+**VI:** Đây là giấy phép phi thương mại — bạn có thể dùng miễn phí cho mục đích cá nhân/học tập/nghiên cứu, nhưng **không** được bán, tích hợp vào sản phẩm/dịch vụ thương mại, hoặc dùng để sinh lợi.
+
+**EN:** This is a non-commercial license — free for personal, hobby, or educational use, but you may **not** sell it, embed it in a commercial product/service, or otherwise use it for commercial gain.
